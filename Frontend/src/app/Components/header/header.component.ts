@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ADMIN_ROLE } from 'src/app/constants/IMPData';
 import { UserService } from 'src/app/services/User/user.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,27 +11,35 @@ import { UserService } from 'src/app/services/User/user.service';
 })
 export class HeaderComponent implements OnInit {
   displayWelcomeHeader: boolean;
-
   imageSrc = 'assets/Images/menu2.png';
-  user: any[];
+
+  // ✅ FIX: correct type
+  user$: Observable<any[]>;
+
   adminRole: any;
+
   constructor(private userService: UserService, private router: Router) {
-    this.user = [];
     this.adminRole = ADMIN_ROLE;
     this.displayWelcomeHeader = true;
+
+    // ✅ initialize observable
+    this.user$ = this.userService.user$;
   }
 
   ngOnInit(): void {
     if (localStorage.getItem('displayWelcomeHeader')) {
       this.displayWelcomeHeader = false;
     }
-    this.userService.getCurrentUser().subscribe((user) => {
-      this.user = user;
-    });
+
+    // ✅ (optional, already assigned in constructor)
+    this.user$ = this.userService.user$;
   }
 
+  // ✅ Debug using subscription (optional)
   displayUser() {
-    console.log('user : ', this.user);
+    this.user$.subscribe((user) => {
+      console.log('user : ', user);
+    });
   }
 
   isAdmin(user: any): boolean {
@@ -39,9 +48,15 @@ export class HeaderComponent implements OnInit {
   }
 
   handleLogout() {
-    localStorage.clear();
+    console.log('Logout clicked');
+
+    // ❌ don't clear here
+    // localStorage.clear();
+
+    // ✅ service handles everything
     this.userService.logoutUser();
-    this.router.navigate(['/login-page']);
+
+    this.router.navigateByUrl('/login-page');
   }
 
   handleHeaderRemove() {

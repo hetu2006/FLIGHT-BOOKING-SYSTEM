@@ -68,12 +68,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   logoutAdmin(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('email');
-    localStorage.removeItem('id');
-    localStorage.removeItem('role');
-    localStorage.removeItem('username');
-    localStorage.removeItem('name');
+    this.userService.logoutUser();
     this.router.navigate(['/login-page']);
   }
 }
