@@ -208,7 +208,12 @@ const normalizeBookingPayload = async (body = {}, user = {}) => {
     ...buildTickets(ticketPrefix, "Economy", economyClassTickets),
     ...buildTickets(ticketPrefix, "Business", businessClassTickets),
     ...buildTickets(ticketPrefix, "First", firstClassTickets),
-  ];
+  ].map((ticket, index) => {
+    return {
+      ...ticket,
+      passengerName: Array.isArray(raw.passengerDetails) ? (raw.passengerDetails[index]?.name || "") : ""
+    };
+  });
 
   const bookingId = raw.bookingId || `${ticketPrefix}${Math.floor(Math.random() * 1000)}`;
 

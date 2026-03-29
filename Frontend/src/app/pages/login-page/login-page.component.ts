@@ -85,7 +85,7 @@ export class LoginPageComponent implements OnInit {
         localStorage.setItem('name', result.name);
         localStorage.setItem('email', result.email);
 
-        this.userService.user.push(newUser);
+        this.userService.setUser(newUser);
 
         console.log('Login Data: ', newData);
 

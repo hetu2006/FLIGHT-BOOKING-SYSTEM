@@ -1,18 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, Subject } from 'rxjs';
 import { API_PATH, TOKEN_PREFIX } from 'src/app/constants/IMPData';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  user: any[];
+  private userSubject = new BehaviorSubject<any[]>([]);
+  user$ = this.userSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.user = [];
+    const token = localStorage.getItem('token');
 
-    if (localStorage.getItem('token') !== null) {
+    if (token) {
       const userData = {
         email: localStorage.getItem('email'),
         id: localStorage.getItem('id'),
@@ -20,17 +21,17 @@ export class UserService {
         username: localStorage.getItem('username'),
         name: localStorage.getItem('name'),
       };
-      this.user.push(userData);
+
+      this.userSubject.next([userData]);
     }
   }
 
+  // ✅ FIXED: return observable directly
   getCurrentUser() {
-    return of(this.user);
+    return this.user$;
   }
 
   signupUser(user: any) {
-    console.log('USER SERVICE: Signup User: ', user);
-
     return this.http.post(`${API_PATH}/auth/signup`, {
       username: user.username,
       password: user.password,
@@ -41,16 +42,26 @@ export class UserService {
   }
 
   loginUser(user: any) {
-    console.log('Login User');
-
     return this.http.post(`${API_PATH}/auth/login`, {
       username: user.username,
       password: user.password,
     });
   }
 
+  // ✅ Call this after successful login
+  setUser(userData: any) {
+    localStorage.setItem('email', userData.email);
+    localStorage.setItem('id', userData.id);
+    localStorage.setItem('role', userData.role);
+    localStorage.setItem('username', userData.username);
+    localStorage.setItem('name', userData.name);
+
+    this.userSubject.next([userData]);
+  }
+
   logoutUser() {
-    return this.user.splice(0, 1);
+    localStorage.clear();
+    this.userSubject.next([]); // 🔥 triggers UI update instantly
   }
 
   // Account settings
@@ -83,9 +94,7 @@ export class UserService {
 
     return this.http.post(
       `${API_PATH}/user/updatedata`,
-      {
-        data: data,
-      },
+      { data: data },
       {
         headers: {
           authorization: `${TOKEN_PREFIX} ${jwt_token}`,
@@ -100,7 +109,10 @@ export class UserService {
     return this.http.post(
       `${API_PATH}/user/changepassword`,
       {
-        data: { oldpassword: data.oldPassword, newpassword: data.newPassword },
+        data: {
+          oldpassword: data.oldPassword,
+          newpassword: data.newPassword,
+        },
       },
       {
         headers: {

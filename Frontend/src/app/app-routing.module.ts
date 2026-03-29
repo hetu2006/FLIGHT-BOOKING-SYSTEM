@@ -21,7 +21,7 @@ import { FlightGudardGuard } from './guards/Flight/flight-gudard.guard';
 import { ADMIN_ROLE } from './constants/IMPData';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [FlightGudardGuard] },
+  { path: '', component: HomeComponent,pathMatch: 'full', canActivate: [FlightGudardGuard] },
   { path: 'login-page', component: LoginPageComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'aboutus', component: AboutUsComponent },
@@ -83,7 +83,7 @@ const routes: Routes = [
     canActivate: [UserLoginGuard],
     data: { roles: [ADMIN_ROLE, 'admin'] },
   },
-  { path: '**', component: HomeComponent },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

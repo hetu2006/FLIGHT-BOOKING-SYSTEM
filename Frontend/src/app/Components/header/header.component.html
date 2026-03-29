@@ -3,6 +3,7 @@
   href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
 />
 
+<!-- Welcome Header -->
 <div
   class="navbar is-lightyellow"
   style="justify-content: center; z-index: 1000; position: relative"
@@ -21,13 +22,13 @@
   >
     x
   </div>
-  <div class="navbar-brand" style="position: relative">
+
+  <div class="navbar-brand">
     <a class="navbar-item">
       <img src="assets/Images/head_logo1.png" width="110" height="90" />
       <p
         style="
           margin-left: 30px;
-          margin-bottom: 5px;
           font-family: Georgia;
           font-style: italic;
           font-weight: bold;
@@ -35,155 +36,142 @@
           color: #3498db;
         "
       >
-        <b><i> WELCOME TO INFY AIRLINES</i></b>
-
+        <b><i>WELCOME TO INFY AIRLINES</i></b>
         <img
           src="assets/Images/head_logo2.png"
           style="margin-left: 30px"
           width="110"
           height="90"
-        /></p
-    ></a>
+        />
+      </p>
+    </a>
   </div>
 </div>
 
+<!-- Main Navbar -->
 <nav
   class="navbar is-info"
-  role="navigation"
-  aria-label="main navigation"
-  style="
-    background-color: #0f67b0;
-    box-shadow: 0px -3px 10px rgb(113, 113, 113);
-  "
+  style="background-color: #0f67b0; box-shadow: 0px -3px 10px #717171"
 >
-  <div id="navbarBasicExample" class="navbar-menu">
-    <div class="navbar-start">
-      <div class="navbar-item">
-        <a>
-          <h3 style="margin-bottom: 5px; font-family: Georgia" routerLink="/">
-            <b> Home </b>
+
+  <!-- 🔥 SINGLE async usage -->
+  <ng-container *ngIf="user$ | async as user">
+
+    <div class="navbar-menu">
+      <div class="navbar-start">
+
+        <!-- Home -->
+        <div class="navbar-item">
+          <h3 routerLink="/" style="font-family: Georgia">
+            <b>Home</b>
           </h3>
-        </a>
-      </div>
+        </div>
 
-      <a
-        *ngIf="user.length > 0 && !isAdmin(user[0])"
-        class="navbar-item"
-        routerLink="/flight-booking"
-      >
-        <h3 style="margin-bottom: 5px; font-family: Georgia">
-          <b> Book Flight </b>
-        </h3>
-      </a>
-
-      <!-- <a class="navbar-item">
-        <h3 style="margin-bottom: 5px; font-family: Georgia">
-          <b> OFFERS </b>
-        </h3>
-      </a> -->
-
-      <div
-        *ngIf="user.length > 0 && !isAdmin(user[0])"
-        class="navbar-item has-dropdown is-hoverable"
-      >
-        <a class="navbar-link">
-          <h3 style="margin-bottom: 5px; font-family: Georgia">
-            <b> Flight Management </b>
-          </h3>
+        <!-- Book Flight -->
+        <a
+          *ngIf="user.length > 0 && !isAdmin(user[0])"
+          class="navbar-item"
+          routerLink="/flight-booking"
+        >
+          <b>Book Flight</b>
         </a>
 
-        <div class="navbar-dropdown">
-          <a class="navbar-item" routerLink="/flight-history">
-            Flight History
-          </a>
-          <a class="navbar-item" routerLink="/flight-booking">
-            Book Flight
-          </a>
-        </div>
-      </div>
-      <a
-        *ngIf="user.length > 0 && isAdmin(user[0])"
-        class="navbar-item"
-        routerLink="/admin"
-      >
-        <h3 style="margin-bottom: 5px; font-family: Georgia">
-          <b> Admin Panel </b>
-        </h3>
-      </a>
-      <div
-        *ngIf="user.length > 0 && !isAdmin(user[0])"
-        class="navbar-item has-dropdown is-hoverable"
-      >
-        <a class="navbar-link">
-          <h3 style="margin-bottom: 5px; font-family: Georgia">
-            <b> More </b>
-          </h3>
-        </a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item" routerLink="/aboutus"> About </a>
-          <a class="navbar-item" routerLink="/contactus"> Contact </a>
-          <div *ngIf="user.length > 0">
-            <hr class="navbar-divider" />
-            <a class="navbar-item" routerLink="/report-issue">
-              Report an issue
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="navbar-end">
-      <div *ngIf="user.length === 0" class="navbar-item">
-        <div class="buttons">
-          <a class="button is-primary" routerLink="/signup">
-            <strong>Sign up</strong>
-          </a>
-
-          <a class="button is-primary" routerLink="/login-page">
-            <strong>Login</strong>
-          </a>
-        </div>
-      </div>
-
-      <div *ngIf="user.length > 0" class="navbar-item">
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            <span style="margin-right: 20px; font-weight: bold; font-size: 18px"
-              >Welcome, {{ user[0].name }}</span
-            >
-            <img
-              src="../../../assets/img/profilePhoto.jpg"
-              alt="profileImage"
-              style="
-                border-radius: 250px;
-                width: 28px;
-                height: 105px;
-                box-sizing: border-box;
-                transform: scale(1.5);
-              "
-            />
-          </a>
+        <!-- Flight Management -->
+        <div
+          *ngIf="user.length > 0 && !isAdmin(user[0])"
+          class="navbar-item has-dropdown is-hoverable"
+        >
+          <a class="navbar-link"><b>Flight Management</b></a>
 
           <div class="navbar-dropdown">
-            <a class="navbar-item" routerLink="/account-settings">
-              Account Settings
+            <a class="navbar-item" routerLink="/flight-history">
+              Flight History
             </a>
-            <a
-              class="navbar-item is-primary"
-              style="border-top: 1px solid #ddd"
-              (click)="handleLogout()"
-            >
-              <strong>Logout</strong>
+            <a class="navbar-item" routerLink="/flight-booking">
+              Book Flight
             </a>
+          </div>
+        </div>
+
+        <!-- Admin -->
+        <a
+          *ngIf="user.length > 0 && isAdmin(user[0])"
+          class="navbar-item"
+          routerLink="/admin"
+        >
+          <b>Admin Panel</b>
+        </a>
+
+        <!-- More -->
+        <div
+          *ngIf="user.length > 0 && !isAdmin(user[0])"
+          class="navbar-item has-dropdown is-hoverable"
+        >
+          <a class="navbar-link"><b>More</b></a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" routerLink="/aboutus">About</a>
+            <a class="navbar-item" routerLink="/contactus">Contact</a>
+
+            <div *ngIf="user.length > 0">
+              <hr class="navbar-divider" />
+              <a class="navbar-item" routerLink="/report-issue">
+                Report an issue
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- <div *ngIf="user.length > 0" class="navbar-item">
-        {{ user[0]?.username }} User
-        <button (click)="displayUser()">Display User</button>
-      </div> -->
+      <!-- RIGHT SIDE -->
+      <div class="navbar-end">
+
+        <!-- Logged OUT -->
+        <div *ngIf="user.length === 0" class="navbar-item">
+          <div class="buttons">
+            <a class="button is-primary" routerLink="/signup">
+              <strong>Sign up</strong>
+            </a>
+            <a class="button is-primary" routerLink="/login-page">
+              <strong>Login</strong>
+            </a>
+          </div>
+        </div>
+
+        <!-- Logged IN -->
+        <div *ngIf="user.length > 0" class="navbar-item">
+          <div class="navbar-item has-dropdown is-hoverable">
+
+            <a class="navbar-link">
+              <span style="margin-right: 20px; font-weight: bold">
+                Welcome, {{ user[0]?.name }}
+              </span>
+
+              <img
+                src="../../../assets/img/profilePhoto.jpg"
+                style="border-radius: 50%; width: 28px; height: 28px"
+              />
+            </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item" routerLink="/account-settings">
+                Account Settings
+              </a>
+
+              <a
+                class="navbar-item"
+                style="border-top: 1px solid #ddd"
+                (click)="handleLogout()"
+              >
+                <strong>Logout</strong>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
+
+  </ng-container>
 </nav>
