@@ -67,7 +67,7 @@ export class InvoiceComponent implements OnInit {
     let currentY = startY + 16;
     for (let i = 0; i < tickets.length; i++) {
       const t = tickets[i] || {};
-      doc.text(`Passenger ${i + 1}`, 14, currentY);
+      doc.text(`${t.passengerName || 'Passenger ' + (i + 1)}`, 14, currentY);
       doc.text(`${t.className || '-'}`, 72, currentY);
       doc.text(`${t.ticketNo || '-'}`, 118, currentY);
       currentY += 8;
