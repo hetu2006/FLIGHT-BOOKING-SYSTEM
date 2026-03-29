@@ -1,0 +1,212 @@
+<div class="container-fluid">
+  <div class="page-header">
+    <h2>Manage Flights</h2>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      <i class="fa-solid fa-plus"></i> Add Flight
+    </button>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center mt-4">
+    Loading flights...
+  </div>
+
+  <div *ngIf="!isLoading && flights.length">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Flight #</th>
+          <th>Airline</th>
+          <th>Source</th>
+          <th>Destination</th>
+          <th>Dep Date</th>
+          <th>Dep Time</th>
+          <th>Arr Time</th>
+          <th>Price</th>
+          <th>Seats</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let f of flights">
+          <td>{{ f.flightNumber }}</td>
+          <td>{{ f.airline }}</td>
+          <td>{{ f.source }}</td>
+          <td>{{ f.destination }}</td>
+          <td>{{ f.departureDate }}</td>
+          <td>{{ f.departureTime }}</td>
+          <td>{{ f.arrivalTime }}</td>
+          <td>{{ f.price }}</td>
+          <td>{{ f.availableSeats }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary mr-1" (click)="editFlight(f)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="deleteFlight(f._id || f.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && flights.length === 0" class="text-center mt-4">
+    No flights to display.
+  </div>
+
+  <div *ngIf="showAddModal" class="modal-overlay" (click)="closeAddModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Add New Flight</h3>
+        <button class="btn-close" (click)="closeAddModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Source</label>
+              <select [(ngModel)]="addForm.routeSource" name="routeSource" class="form-control" required>
+                <option value="">Select Source</option>
+                <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label>Destination</label>
+              <select [(ngModel)]="addForm.routeDestination" name="routeDestination" class="form-control" required>
+                <option value="">Select Destination</option>
+                <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Departure Date</label>
+              <input type="date" [(ngModel)]="addForm.departureDate" name="departureDate" class="form-control" required />
+            </div>
+            <div class="form-group col-6">
+              <label>Departure Time</label>
+              <input type="time" [(ngModel)]="addForm.departureTime" name="departureTime" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Flight Number</label>
+            <input type="text" [(ngModel)]="addForm.flightNumber" name="flightNumber" class="form-control" placeholder="e.g. AI101" />
+          </div>
+          <div class="form-group">
+            <label>Airline</label>
+            <input type="text" [(ngModel)]="addForm.airline" name="airline" class="form-control" placeholder="e.g. IndiGo" />
+          </div>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label>Economy Price</label>
+              <input type="number" [(ngModel)]="addForm.economyClassTicketCost" name="economyClassTicketCost" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>Business Price</label>
+              <input type="number" [(ngModel)]="addForm.businessClassTicketCost" name="businessClassTicketCost" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>First Class Price</label>
+              <input type="number" [(ngModel)]="addForm.firstClassTicketCost" name="firstClassTicketCost" class="form-control" min="0" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label>Economy Seats</label>
+              <input type="number" [(ngModel)]="addForm.economyClassTotalSeats" name="economyClassTotalSeats" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>Business Seats</label>
+              <input type="number" [(ngModel)]="addForm.businessClassTotalSeats" name="businessClassTotalSeats" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>First Seats</label>
+              <input type="number" [(ngModel)]="addForm.firstClassTotalSeats" name="firstClassTotalSeats" class="form-control" min="0" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeAddModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveNewFlight()">Add Flight</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showEditModal" class="modal-overlay" (click)="closeEditModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Edit Flight</h3>
+        <button class="btn-close" (click)="closeEditModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Source</label>
+              <select [(ngModel)]="editForm.routeSource" name="routeSource" class="form-control" required>
+                <option value="">Select Source</option>
+                <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label>Destination</label>
+              <select [(ngModel)]="editForm.routeDestination" name="routeDestination" class="form-control" required>
+                <option value="">Select Destination</option>
+                <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Departure Date</label>
+              <input type="date" [(ngModel)]="editForm.departureDate" name="departureDate" class="form-control" required />
+            </div>
+            <div class="form-group col-6">
+              <label>Departure Time</label>
+              <input type="time" [(ngModel)]="editForm.departureTime" name="departureTime" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Flight Number</label>
+            <input type="text" [(ngModel)]="editForm.flightNumber" name="flightNumber" class="form-control" placeholder="e.g. AI101" />
+          </div>
+          <div class="form-group">
+            <label>Airline</label>
+            <input type="text" [(ngModel)]="editForm.airline" name="airline" class="form-control" placeholder="e.g. IndiGo" />
+          </div>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label>Economy Price</label>
+              <input type="number" [(ngModel)]="editForm.economyClassTicketCost" name="economyClassTicketCost" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>Business Price</label>
+              <input type="number" [(ngModel)]="editForm.businessClassTicketCost" name="businessClassTicketCost" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>First Class Price</label>
+              <input type="number" [(ngModel)]="editForm.firstClassTicketCost" name="firstClassTicketCost" class="form-control" min="0" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label>Economy Seats</label>
+              <input type="number" [(ngModel)]="editForm.economyClassTotalSeats" name="economyClassTotalSeats" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>Business Seats</label>
+              <input type="number" [(ngModel)]="editForm.businessClassTotalSeats" name="businessClassTotalSeats" class="form-control" min="0" />
+            </div>
+            <div class="form-group col-4">
+              <label>First Seats</label>
+              <input type="number" [(ngModel)]="editForm.firstClassTotalSeats" name="firstClassTotalSeats" class="form-control" min="0" />
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeEditModal()">Cancel</button>
+        <button class="btn btn-primary" (click)="saveEditFlight()">Update Flight</button>
+      </div>
+    </div>
+  </div>
+</div>

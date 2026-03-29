@@ -1,0 +1,32 @@
+###
+// Endpoint: Application Start
+GET https://<url>/
+Content-Type: application/json
+
+###
+// Endpoint: Signup
+POST https://<url>/auth/login
+Content-Type: application/json
+
+{
+    "username": "Nilesh",
+    "password": "123",
+    "email": "nilesh@gmail.com",
+    "name": "Nilesh Kapse"
+}
+
+###
+// Endpoint: Login
+GET https://<url>/auth/login
+Content-Type: application/json
+
+{
+    "username": "Nilesh",
+    "password": "123"
+}
+
+###
+// Endpoint: Get User data
+GET https://<url>/user/userdata
+Content-Type: application/json
+Authorization: d8c03b5e-29aa-4708-b55d-5d32b2a7295b eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNTkxZWVkY2UwMzEwMDNhNjY2ZTBjNSIsInVzZXJuYW1lIjoiTmlsZXNoIiwiZW1haWwiOiJuaWxlc2hAZ21haWwuY29tIiwicm9sZSI6ImZiY2I0YWJmLTg2ZDctNDc1Yy1iY2FhLTIyOTY3YzU3NDc2OSIsImlhdCI6MTY1MDAwNzgxMX0.hm0kV0Zwu5mD22SH-I0g_IuHnCod_uXpon1Dy-Mx1u0

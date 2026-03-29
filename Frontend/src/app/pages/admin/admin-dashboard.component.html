@@ -1,0 +1,166 @@
+<div class="admin-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.collapse]="!sidebarOpen">
+    <div class="sidebar-header">
+      <h3>Admin Panel</h3>
+      <button class="btn-toggle-sidebar" (click)="toggleSidebar()" title="Toggle Sidebar">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a
+            [routerLink]="['/admin/home']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-gauge"></i>
+            <span>Index</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/airlines']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-building"></i>
+            <span>Airlines</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/flights']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-plane"></i>
+            <span>Flights</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/users']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-users"></i>
+            <span>Users</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/registrations']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-user-check"></i>
+            <span>Registrations</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/bookings']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-ticket"></i>
+            <span>Bookings</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/edit-profile']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Edit Profile</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/payments']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-credit-card"></i>
+            <span>Payments</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/report']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-chart-line"></i>
+            <span>Report</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/issues']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-exclamation-triangle"></i>
+            <span>Issues</span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="['/admin/contacts']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="fa-solid fa-envelope"></i>
+            <span>Contacts</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="btn btn-danger w-100" (click)="logoutAdmin()">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="btn-toggle-mobile" (click)="toggleSidebar()" title="Toggle Sidebar">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <h1>Admin Dashboard</h1>
+      </div>
+      <div class="header-right">
+        <div class="admin-dropdown" [class.open]="adminDropdownOpen">
+          <button class="admin-dropdown-btn" (click)="toggleAdminDropdown()">
+            <span class="user-name">{{ loggedInDisplayName }}</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="admin-dropdown-menu" *ngIf="adminDropdownOpen">
+            <a class="admin-dropdown-item" routerLink="/admin/edit-profile" (click)="closeAdminDropdown()">
+              <i class="fa-solid fa-user-pen"></i> Edit Profile
+            </a>
+            <a href="javascript:void(0)" class="admin-dropdown-item logout" (click)="logoutAdmin(); closeAdminDropdown()">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

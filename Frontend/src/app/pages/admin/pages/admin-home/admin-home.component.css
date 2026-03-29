@@ -1,0 +1,278 @@
+.admin-home {
+  animation: fadeIn 0.3s ease;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a3a52;
+}
+
+.page-header p {
+  margin: 4px 0 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.btn-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #1a3a52;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-refresh:hover {
+  background: #0d1f2d;
+  transform: translateY(-1px);
+}
+
+.btn-refresh.loading i {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 4px solid #1a3a52;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+.stat-card.bookings { border-left-color: #0ea5e9; }
+.stat-card.revenue { border-left-color: #10b981; }
+.stat-card.flights { border-left-color: #6366f1; }
+.stat-card.users { border-left-color: #8b5cf6; }
+.stat-card.airlines { border-left-color: #f59e0b; }
+.stat-card.issues { border-left-color: #ef4444; }
+.stat-card.contacts { border-left-color: #ec4899; }
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(26,58,82,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #1a3a52;
+}
+
+.stat-card.bookings .stat-icon { background: rgba(14,165,233,0.15); color: #0ea5e9; }
+.stat-card.revenue .stat-icon { background: rgba(16,185,129,0.15); color: #10b981; }
+.stat-card.flights .stat-icon { background: rgba(99,102,241,0.15); color: #6366f1; }
+.stat-card.users .stat-icon { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+.stat-card.airlines .stat-icon { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.stat-card.issues .stat-icon { background: rgba(239,68,68,0.15); color: #ef4444; }
+.stat-card.contacts .stat-icon { background: rgba(236,72,153,0.15); color: #ec4899; }
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a3a52;
+}
+
+/* Section */
+.section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  margin-bottom: 24px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a3a52;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section h3 i {
+  color: #0ea5e9;
+}
+
+.link-view-all {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a3a52;
+  text-decoration: none;
+}
+
+.link-view-all:hover {
+  color: #0ea5e9;
+}
+
+/* Dashboard table */
+.recent-bookings-section .table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.dashboard-table thead {
+  background: linear-gradient(180deg, #1a3a52 0%, #0d1f2d 100%);
+  color: #fff;
+}
+
+.dashboard-table th {
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.dashboard-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dashboard-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.dashboard-table td {
+  padding: 14px 16px;
+}
+
+.dashboard-table td.amount {
+  font-weight: 600;
+  color: #10b981;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge.pending { background: #fef3c7; color: #d97706; }
+.status-badge.confirmed { background: #d1fae5; color: #059669; }
+.status-badge.paid { background: #d1fae5; color: #059669; }
+.status-badge.cancelled,
+.status-badge.rejected { background: #fee2e2; color: #dc2626; }
+
+/* Quick grid */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.quick-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a3a52;
+}
+
+.quick-card:hover {
+  background: #fff;
+  border-color: #1a3a52;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26,58,82,0.15);
+}
+
+.quick-card i {
+  font-size: 18px;
+  color: #0ea5e9;
+}
+
+.quick-label { flex: 1; }
+
+.quick-badge {
+  background: #ef4444;
+  color: #fff;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.last-updated {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 16px 0 0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

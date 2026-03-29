@@ -1,0 +1,66 @@
+<div class="admin-home">
+  <div class="page-header">
+    <div>
+      <h2>Dashboard</h2>
+      <p>Real-time overview and quick access to management</p>
+    </div>
+    <button class="btn-refresh" (click)="loadStats()" title="Refresh" [class.loading]="refreshing">
+      <i class="fa-solid fa-arrows-rotate"></i> Refresh
+    </button>
+  </div>
+
+  <!-- Stats cards - top row -->
+  <div class="stats-row">
+    <div class="stat-card" *ngFor="let s of stats" [ngClass]="s.cssClass || ''">
+      <div class="stat-icon"><i class="fa-solid {{ s.icon }}"></i></div>
+      <div class="stat-content">
+        <span class="stat-label">{{ s.label }}</span>
+        <span class="stat-value" [innerHTML]="s.value"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Bookings - proper table -->
+  <div class="section recent-bookings-section" *ngIf="recentBookings.length">
+    <div class="section-header">
+      <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Bookings</h3>
+      <a routerLink="/admin/bookings" class="link-view-all">View All</a>
+    </div>
+    <div class="table-wrapper">
+      <table class="dashboard-table">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let b of recentBookings" (click)="navigate('/admin/bookings')">
+            <td><strong>{{ b.bookingId || (b._id | slice:0:12) }}</strong></td>
+            <td>{{ b.username || '-' }}</td>
+            <td class="amount">&#8377;{{ b.totalCost || b.totalPrice || 0 }}</td>
+            <td><span class="status-badge" [ngClass]="(b.status || 'pending') | lowercase">{{ b.status || 'Pending' }}</span></td>
+            <td>{{ b.createdAt | date:'short' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Quick action cards -->
+  <div class="section">
+    <h3><i class="fa-solid fa-link"></i> Quick Actions</h3>
+    <div class="quick-grid">
+      <button *ngFor="let item of quickLinks" class="quick-card" (click)="navigate(item.route)" type="button">
+        <i class="fa-solid {{ item.icon }}"></i>
+        <span class="quick-label">{{ item.label }}</span>
+        <span *ngIf="item.count !== undefined" class="quick-badge">{{ item.count }}</span>
+      </button>
+    </div>
+  </div>
+
+  <p class="last-updated" *ngIf="lastUpdated">Last updated: {{ lastUpdated }}</p>
+</div>

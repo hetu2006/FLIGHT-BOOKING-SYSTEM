@@ -1,0 +1,227 @@
+<div class="admin-bookings-container">
+  <div class="page-header">
+    <h2>Manage Bookings</h2>
+   
+  </div>
+
+  <div class="search-section">
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search bookings by booking ID, user, flight..."
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="searchBookings()"
+        class="search-input"
+      />
+      <button class="btn btn-sm btn-primary" (click)="searchBookings()" type="button">Search</button>
+      <button class="btn btn-sm btn-light" (click)="clearSearch()" type="button">Clear</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading bookings...</p>
+  </div>
+
+  <div *ngIf="!isLoading && bookings.length > 0" class="table-container">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th (click)="setSort('bookingId')">Booking ID <i class="fa-solid {{ getSortIcon('bookingId') }}"></i></th>
+          <th (click)="setSort('username')">User <i class="fa-solid {{ getSortIcon('username') }}"></i></th>
+          <th (click)="setSort('flightId')">Flight <i class="fa-solid {{ getSortIcon('flightId') }}"></i></th>
+          <th (click)="setSort('paymentMethod')">Payment <i class="fa-solid {{ getSortIcon('paymentMethod') }}"></i></th>
+          <th (click)="setSort('paymentStatus')">Pay. Status <i class="fa-solid {{ getSortIcon('paymentStatus') }}"></i></th>
+          <th (click)="setSort('passengers')">Passengers <i class="fa-solid {{ getSortIcon('passengers') }}"></i></th>
+          <th (click)="setSort('totalPrice')">Total Price <i class="fa-solid {{ getSortIcon('totalPrice') }}"></i></th>
+          <th (click)="setSort('status')">Status <i class="fa-solid {{ getSortIcon('status') }}"></i></th>
+          <th (click)="setSort('createdAt')">Booking Date <i class="fa-solid {{ getSortIcon('createdAt') }}"></i></th>
+          <th class="col-actions">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td><strong>{{ booking.bookingId || (getBookingId(booking) | slice: 0:10) }}</strong></td>
+          <td>{{ booking.userName || booking.username || booking.userId }}</td>
+          <td>{{ booking.flightNumber || booking.flightId }}</td>
+          <td>{{ booking.paymentMethod || '-' }}</td>
+          <td>{{ booking.paymentStatus || '-' }}</td>
+          <td><span class="badge badge-info">{{ booking.numberOfPassengers || booking.passengers || 0 }}</span></td>
+          <td><strong>&#8377;{{ booking.totalPrice || booking.totalCost || 0 }}</strong></td>
+          <td>
+            <span class="badge" [class]="getStatusBadgeClass(booking.status)">
+              {{ normalizeStatus(booking.status) | uppercase }}
+            </span>
+          </td>
+          <td>{{ booking.createdAt | date: 'medium' }}</td>
+          <td class="td-actions">
+            <div class="action-btns">
+              <button
+                class="act-btn confirm"
+                *ngIf="booking.status === 'pending'"
+                (click)="updateBookingStatus(booking, 'confirmed'); $event.stopPropagation()"
+                title="Confirm"
+              >
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button
+                class="act-btn cancel"
+                *ngIf="booking.status === 'pending'"
+                (click)="updateBookingStatus(booking, 'cancelled'); $event.stopPropagation()"
+                title="Cancel"
+              >
+                <i class="fa-solid fa-ban"></i>
+              </button>
+              <button class="act-btn delete" (click)="deleteBooking(getBookingId(booking)); $event.stopPropagation()" title="Delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && bookings.length === 0" class="no-data">
+    <i class="fa-solid fa-inbox"></i>
+    <p>No bookings found</p>
+  </div>
+
+  <div class="pagination-tools" *ngIf="!isLoading && totalRecords > 0">
+    <div class="record-info">
+      Showing {{ getRecordStart() }} - {{ getRecordEnd() }} of {{ totalRecords }}
+    </div>
+    <div class="size-control">
+      <label>Rows:</label>
+      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+      </select>
+    </div>
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <button class="btn btn-sm" (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>
+      <button class="btn btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">Prev</button>
+      <button
+        *ngFor="let page of getPaginationPages()"
+        class="btn btn-sm"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button class="btn btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      <button class="btn btn-sm" (click)="goToLastPage()" [disabled]="currentPage === totalPages">Last</button>
+    </div>
+  </div>
+
+  <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEditMode ? 'Edit Booking' : 'Add New Booking' }}</h3>
+        <button class="btn-close" (click)="closeModal()" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>User Identifier (username/email/userId)</label>
+            <input
+              type="text"
+              [(ngModel)]="formData.userIdentifier"
+              name="userIdentifier"
+              class="form-control"
+              placeholder="e.g. admin or admin@flightdemo.com"
+              [disabled]="isEditMode"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Flight Identifier (flightNumber/flightId)</label>
+            <input
+              type="text"
+              [(ngModel)]="formData.flightIdentifier"
+              name="flightIdentifier"
+              class="form-control"
+              placeholder="e.g. AI101 or flight id"
+              [disabled]="isEditMode"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Class Type</label>
+            <select
+              [(ngModel)]="formData.classType"
+              name="classType"
+              class="form-control"
+              [disabled]="isEditMode"
+            >
+              <option value="economy">Economy</option>
+              <option value="business">Business</option>
+              <option value="first">First</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Passengers</label>
+            <input
+              type="number"
+              min="1"
+              [(ngModel)]="formData.numberOfPassengers"
+              name="numberOfPassengers"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Total Price</label>
+            <input
+              type="number"
+              min="0"
+              [(ngModel)]="formData.totalPrice"
+              name="totalPrice"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select [(ngModel)]="formData.paymentMethod" name="paymentMethod" class="form-control">
+              <option value="">-- none --</option>
+              <option value="upi">UPI</option>
+              <option value="credit">Credit Card</option>
+              <option value="debit">Debit Card</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Payment Status</label>
+            <select [(ngModel)]="formData.paymentStatus" name="paymentStatus" class="form-control">
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Status</label>
+            <select [(ngModel)]="formData.status" name="status" class="form-control">
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()" type="button">Cancel</button>
+        <button class="btn btn-primary" (click)="saveBooking()" type="button">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

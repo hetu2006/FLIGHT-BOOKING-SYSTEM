@@ -1,0 +1,87 @@
+.admin-registrations-container {
+  animation: fadeIn 0.25s ease-in;
+}
+
+.page-header {
+  margin-bottom: 16px;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #1a3a52;
+}
+
+.search-section {
+  margin-bottom: 16px;
+}
+
+.search-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #d5dde3;
+  border-radius: 6px;
+}
+
+.table-container {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table thead th {
+  cursor: pointer;
+  user-select: none;
+}
+
+.pagination-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.pagination-container {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pagination-container .btn.active {
+  background: #1a3a52;
+  color: #fff;
+}
+
+.size-control {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.size-control select {
+  padding: 4px 8px;
+}
+
+.loading,
+.no-data {
+  padding: 18px;
+  color: #667;
+  text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

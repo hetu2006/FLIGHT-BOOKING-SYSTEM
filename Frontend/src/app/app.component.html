@@ -1,0 +1,9 @@
+<!-- Header - Hidden on Admin Routes -->
+<app-header *ngIf="!isAdminRoute"></app-header>
+
+<!-- <div class="container h-100vh pt-4 pb-5"> -->
+<router-outlet></router-outlet>
+<!-- </div> -->
+
+<!-- Footer - Hidden on Admin Routes -->
+<app-footer *ngIf="!isAdminRoute"></app-footer>

@@ -1,0 +1,175 @@
+<div class="loader-container" *ngIf="displayModal">
+  <div
+    class="spinner-border text-light"
+    style="width: 3rem; height: 3rem"
+    role="status"
+  ></div>
+  <h3 style="margin-top: 10px; color: white">Loading</h3>
+</div>
+
+<div
+  class="All"
+  style="
+    background-image: url(assets/Images/login_background.jpg);
+    background-size: cover;
+    padding-top: 5em;
+    padding-bottom: 5em;
+    margin: 3px 0px;
+  "
+>
+  <div
+    style="
+      width: 60%;
+      margin: auto;
+      background: rgb(246, 246, 246);
+      border-radius: 10px;
+      padding: 50px;
+      box-shadow: 0px 0px 10px #333;
+      text-align: center;
+    "
+  >
+    <h1 style="font-weight: bolder; font-size: 28px;">
+      SIGN-UP
+    </h1>
+
+    <!-- ✅ SINGLE FORM -->
+    <form (ngSubmit)="handleFormSubmit($event)" #signupForm="ngForm" novalidate>
+
+      <!-- Name -->
+      <div style="text-align: left">
+        <label><b>Name</b></label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter Name"
+          [(ngModel)]="name"
+          #nameField="ngModel"
+          required
+        />
+        <div *ngIf="nameField.invalid && nameField.touched" style="color:red; font-size:12px;">
+          Name is required
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div style="text-align: left">
+        <label><b>Email</b></label>
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter Email"
+          [(ngModel)]="email"
+          #emailField="ngModel"
+          required
+        />
+        <div *ngIf="emailField.invalid && emailField.touched" style="color:red; font-size:12px;">
+          Valid email is required
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div style="text-align: left">
+        <label><b>Phone Number</b></label>
+        <input
+          type="text"
+          name="phone"
+          placeholder="Enter Phone Number"
+          [(ngModel)]="phoneNo"
+          #phoneField="ngModel"
+          pattern="^[6-9][0-9]{9}$"
+          required
+        />
+        <div *ngIf="phoneField.invalid && phoneField.touched" style="color:red; font-size:12px;">
+          Phone must start with 6,7,8,9 and be 10 digits
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div style="text-align: left">
+        <label><b>Password</b></label>
+        <input
+          type="password"
+          name="psw"
+          placeholder="Enter Password"
+          [(ngModel)]="password"
+          #passField="ngModel"
+          required
+        />
+        <div *ngIf="passField.invalid && passField.touched" style="color:red; font-size:12px;">
+          Password is required
+        </div>
+      </div>
+
+      <!-- Repeat Password -->
+      <div style="text-align: left">
+        <label><b>Repeat Password</b></label>
+        <input
+          type="password"
+          name="psw-repeat"
+          placeholder="Repeat Password"
+          [(ngModel)]="repeatPassword"
+          #repeatPassField="ngModel"
+          required
+        />
+        <div *ngIf="repeatPassword !== password && repeatPassField.touched" style="color:red; font-size:12px;">
+          Passwords do not match
+        </div>
+      </div>
+
+      <!-- Checkbox -->
+      <div style="text-align: left">
+        <label>
+          <input type="checkbox" name="remember" [(ngModel)]="rememberMe" />
+          Remember me
+        </label>
+      </div>
+
+      <p style="font-weight: bolder">
+        By creating an account you agree to our
+        <a href="#" style="color: dodgerblue">Terms & Privacy</a>.
+      </p>
+
+      <!-- Buttons -->
+      <div style="text-align: center;">
+        <button
+          type="submit"
+          [disabled]="signupForm.invalid || password !== repeatPassword"
+          style="
+            width: 160px;
+            font-weight: bolder;
+            border-radius: 12px;
+            background-color: rgb(249, 192, 86);
+            color: black;
+          "
+        >
+          SIGN-UP
+        </button>
+
+        <button
+          type="reset"
+          style="
+            width: 160px;
+            margin-left: 10px;
+            font-weight: bolder;
+            background-color: crimson;
+            border-radius: 12px;
+            color: white;
+          "
+        >
+          CANCEL
+        </button>
+      </div>
+
+      <!-- ✅ LOGIN OPTION -->
+      <div style="text-align: center; margin-top: 15px;">
+        <p style="font-weight: bolder;">
+          Already have an account?
+          <a routerLink="/login-page" style="color: dodgerblue; cursor: pointer;">
+            Login Here
+          </a>
+        </p>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,158 @@
+<div class="admin-users-container">
+  <div class="page-header">
+    <h2>Manage Users</h2>
+    <button class="btn btn-primary btn-add" (click)="openAddModal()" type="button">
+      <i class="fa-solid fa-user-plus"></i>
+      <span>Add New User</span>
+    </button>
+  </div>
+
+  <div class="search-section">
+    <div class="search-container">
+      <input
+        type="text"
+        placeholder="Search users by name, email, username..."
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="searchUsers()"
+        class="search-input"
+      />
+      <button class="btn btn-sm btn-primary" (click)="searchUsers()" type="button">Search</button>
+      <button class="btn btn-sm btn-light" (click)="clearSearch()" type="button">Clear</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+    <p>Loading users...</p>
+  </div>
+
+  <div *ngIf="!isLoading && users.length > 0" class="table-container">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th (click)="setSort('username')">Username <i class="fa-solid {{ getSortIcon('username') }}"></i></th>
+          <th (click)="setSort('name')">Name <i class="fa-solid {{ getSortIcon('name') }}"></i></th>
+          <th (click)="setSort('email')">Email <i class="fa-solid {{ getSortIcon('email') }}"></i></th>
+          <th (click)="setSort('phoneNo')">Phone <i class="fa-solid {{ getSortIcon('phoneNo') }}"></i></th>
+          <th (click)="setSort('role')">Role <i class="fa-solid {{ getSortIcon('role') }}"></i></th>
+          <th (click)="setSort('createdAt')">Joined <i class="fa-solid {{ getSortIcon('createdAt') }}"></i></th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td><strong>{{ user.username }}</strong></td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNo }}</td>
+          <td>
+            <span class="badge" [class.badge-admin]="user.role === 'admin'" [class.badge-user]="user.role === 'user'">
+              {{ user.role | uppercase }}
+            </span>
+          </td>
+          <td>{{ user.createdAt | date: 'medium' }}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn btn-sm btn-edit" (click)="openEditModal(user)" type="button">
+                <i class="fa-solid fa-pen"></i>
+                <span>Edit</span>
+              </button>
+              <button class="btn btn-sm btn-delete" (click)="deleteUser(getUserId(user))" type="button">
+                <i class="fa-solid fa-trash"></i>
+                <span>Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && users.length === 0" class="no-data">
+    <i class="fa-solid fa-inbox"></i>
+    <p>No users found</p>
+  </div>
+
+  <div class="pagination-tools" *ngIf="!isLoading && totalRecords > 0">
+    <div class="record-info">
+      Showing {{ getRecordStart() }} -
+      {{ getRecordEnd() }} of {{ totalRecords }}
+    </div>
+    <div class="size-control">
+      <label>Rows:</label>
+      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+      </select>
+    </div>
+    <div *ngIf="totalPages > 1" class="pagination-container">
+      <button class="btn btn-sm" (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>
+      <button class="btn btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">Prev</button>
+      <button
+        *ngFor="let page of getPaginationPages()"
+        class="btn btn-sm"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button class="btn btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      <button class="btn btn-sm" (click)="goToLastPage()" [disabled]="currentPage === totalPages">Last</button>
+    </div>
+  </div>
+
+  <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>{{ isEditMode ? 'Edit User' : 'Add New User' }}</h3>
+        <button class="btn-close" (click)="closeModal()" type="button">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              [(ngModel)]="formData.username"
+              name="username"
+              class="form-control"
+              [disabled]="isEditMode"
+            />
+          </div>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" [(ngModel)]="formData.name" name="name" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" [(ngModel)]="formData.email" name="email" class="form-control" />
+          </div>
+          <div class="form-group" *ngIf="!isEditMode">
+            <label>Password</label>
+            <input type="password" [(ngModel)]="formData.password" name="password" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" [(ngModel)]="formData.phoneNo" name="phoneNo" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select [(ngModel)]="formData.role" name="role" class="form-control">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()" type="button">Cancel</button>
+        <button class="btn btn-primary" (click)="saveUser()" type="button">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="loader-container" *ngIf="displayModal">
+  <div
+    class="spinner-border text-light"
+    style="width: 3rem; height: 3rem"
+    role="status"
+  ></div>
+  <h3 style="margin-top: 10px; color: white">Loading</h3>
+</div>
+
+<div
+  class="All"
+  style="
+    background-image: url(assets/Images/login_background.jpg);
+    background-size: cover;
+    padding-top: 5em;
+    padding-bottom: 5em;
+  "
+>
+  <div
+    style="
+      width: 60%;
+      margin: auto;
+      background: rgb(246, 246, 246);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0px 0px 10px #333;
+    "
+  >
+    <p
+      style="
+        font-weight: bolder;
+        font-size: 28px;
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        text-align: center;
+      "
+    >
+      LOGIN
+    </p>
+
+    <!-- ✅ SINGLE FORM (FIXED) -->
+    <form (ngSubmit)="handleFormSubmit($event)" #loginForm="ngForm" novalidate>
+      
+      <!-- Username -->
+      <div style="text-align: left">
+        <label style="font-weight: bolder">
+          <b>USERNAME / EMAIL / NAME</b>
+        </label>
+        <input
+          type="text"
+          placeholder="Enter Username or Email or Name"
+          name="uname"
+          [(ngModel)]="username"
+          #userField="ngModel"
+          required
+        />
+        <div *ngIf="userField.invalid && userField.touched" style="color:red; font-size:12px;">
+          This field is required
+        </div>
+      </div>
+
+      <br />
+
+      <!-- Password -->
+      <div style="text-align: left">
+        <label style="font-weight: bolder"><b>PASSWORD</b></label>
+        <input
+          type="password"
+          placeholder="Enter Password"
+          name="psw1"
+          [(ngModel)]="password"
+          #passField="ngModel"
+          required
+        />
+        <div *ngIf="passField.invalid && passField.touched" style="color:red; font-size:12px;">
+          Password is required
+        </div>
+      </div>
+
+      <br />
+
+      <!-- Remember -->
+      <div>
+        <label style="font-weight: bolder">
+          <input type="checkbox" name="remember" [(ngModel)]="rememberMe" />
+          Remember me
+        </label>
+      </div>
+
+      <br />
+
+      <!-- Buttons -->
+      <div style="text-align: center">
+        <button
+          type="submit"
+          [disabled]="loginForm.invalid"
+          style="
+            margin-bottom: 20px;
+            font-weight: bolder;
+            border-radius: 12px;
+            background-color: rgb(249, 192, 86);
+            color: black;
+            padding: 8px 20px;
+          "
+        >
+          LOGIN
+        </button>
+
+        <button
+          type="reset"
+          style="
+            background-color: crimson;
+            margin-left: 10px;
+            margin-bottom: 20px;
+            font-weight: bolder;
+            border-radius: 12px;
+            color: white;
+            padding: 8px 20px;
+          "
+        >
+          CANCEL
+        </button>
+      </div>
+
+      <!-- ✅ REGISTER OPTION ADDED -->
+      <div style="text-align: center; margin-top: 10px;">
+        <p style="font-weight: bolder;">
+          Don't have an account?
+          <a
+            routerLink="/signup"
+            style="color: dodgerblue; cursor: pointer;"
+          >
+            Register Here
+          </a>
+        </p>
+      </div>
+
+    </form>
+  </div>
+</div>

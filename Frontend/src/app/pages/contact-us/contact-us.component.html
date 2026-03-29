@@ -1,0 +1,75 @@
+<div class="contact-page">
+  <div class="container py-4">
+    <div class="heading-block">
+      <h2>Contact Us</h2>
+      <p>Share your query and our team will reply from admin panel follow-up.</p>
+    </div>
+
+    <div class="content-grid">
+      <section class="info-panel">
+        <h3>Our Offices</h3>
+        <div class="info-card">
+          <h4>Mumbai</h4>
+          <p>AeroFly India Pvt. Ltd. 06, Godrej Business District, Pirojshanagar, Vikhroli, Mumbai-400079, India</p>
+        </div>
+        <div class="info-card">
+          <h4>Bangalore</h4>
+          <p>AeroFly India Pvt. Ltd. Embassy Tech Village, Outer Ring Rd, Bengaluru, Karnataka 560103</p>
+        </div>
+
+        <h3>Email Support</h3>
+        <p>For booking queries and issue tracking, use <a routerLink="/report-issue">Report Issue</a>.</p>
+        <p>For privacy concerns, write to <strong>privacy@infyairlines.com</strong>.</p>
+      </section>
+
+      <section class="form-panel">
+        <h3>Send Message</h3>
+        <form (ngSubmit)="submitForm()">
+          <div class="form-group">
+            <label for="name">Name *</label>
+            <input id="name" name="name" class="form-control" [(ngModel)]="formData.name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              class="form-control"
+              [(ngModel)]="formData.email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phoneNo">Phone</label>
+            <input id="phoneNo" name="phoneNo" class="form-control" [(ngModel)]="formData.phoneNo" />
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject *</label>
+            <input id="subject" name="subject" class="form-control" [(ngModel)]="formData.subject" required />
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              class="form-control"
+              [(ngModel)]="formData.message"
+              required
+            ></textarea>
+          </div>
+
+          <button class="btn btn-primary submit-btn" type="submit" [disabled]="isSubmitting">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>{{ isSubmitting ? 'Submitting...' : 'Submit' }}</span>
+          </button>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

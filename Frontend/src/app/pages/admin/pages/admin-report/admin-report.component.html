@@ -1,0 +1,32 @@
+<div class="admin-report">
+  <h2>Business Report</h2>
+  <div class="filter-tabs">
+    <button class="btn" [class.active]="filter === 'day'" (click)="setFilter('day')">Today</button>
+    <button class="btn" [class.active]="filter === 'month'" (click)="setFilter('month')">This Month</button>
+    <button class="btn" [class.active]="filter === 'year'" (click)="setFilter('year')">This Year</button>
+  </div>
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div *ngIf="!isLoading && report" class="report-cards">
+    <div class="report-card">
+      <i class="fa-solid fa-ticket"></i>
+      <h3>Total Bookings</h3>
+      <p class="value">{{ report.totalBookings || 0 }}</p>
+    </div>
+    <div class="report-card revenue">
+      <i class="fa-solid fa-indian-rupee-sign"></i>
+      <h3>Total Revenue</h3>
+      <p class="value">₹ {{ report.totalRevenue || report.profit || 0 }}</p>
+    </div>
+    <div class="report-card profit">
+      <i class="fa-solid fa-chart-line"></i>
+      <h3>Profit</h3>
+      <p class="value">₹ {{ report.profit || report.totalRevenue || 0 }}</p>
+    </div>
+    <div class="report-card balance">
+      <i class="fa-solid fa-wallet"></i>
+      <h3>Balance</h3>
+      <p class="value">₹ {{ report.balance || report.totalRevenue || 0 }}</p>
+    </div>
+  </div>
+  <div *ngIf="!isLoading && !report" class="no-data">No report data available</div>
+</div>

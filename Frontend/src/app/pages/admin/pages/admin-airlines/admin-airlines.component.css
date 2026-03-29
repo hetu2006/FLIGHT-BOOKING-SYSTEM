@@ -1,0 +1,132 @@
+.admin-airlines-container {
+  animation: fadeIn 0.25s ease-in;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #1a3a52;
+}
+
+.page-header p {
+  color: #62737d;
+  margin: 6px 0 16px;
+}
+
+.search-container {
+  display: flex;
+  gap: 8px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #d5dde3;
+  border-radius: 6px;
+}
+
+.table-container {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.table thead th {
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pagination-tools {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.pagination-container {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.pagination-container .btn.active {
+  background: #1a3a52;
+  color: #fff;
+}
+
+.size-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.size-control select {
+  padding: 4px 8px;
+}
+
+.loading,
+.no-data {
+  padding: 18px;
+  color: #667;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+
+.modal-content {
+  width: min(92vw, 420px);
+  background: #fff;
+  border-radius: 8px;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 14px;
+  border-bottom: 1px solid #e4e9ed;
+}
+
+.modal-footer {
+  border-bottom: none;
+  border-top: 1px solid #e4e9ed;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.modal-body {
+  padding: 14px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.btn-close {
+  border: none;
+  background: transparent;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

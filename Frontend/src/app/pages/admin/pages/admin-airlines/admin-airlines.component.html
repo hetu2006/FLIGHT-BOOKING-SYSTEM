@@ -1,0 +1,99 @@
+<div class="admin-airlines-container">
+  <div class="page-header">
+    <h2>Manage Airlines</h2>
+    <p>Edit airline details globally for all mapped flights.</p>
+  </div>
+
+  <div class="search-section">
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search by airline or route..."
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+      />
+      <button class="btn btn-sm btn-primary" (click)="onSearch()">Search</button>
+      <button class="btn btn-sm btn-light" (click)="clearSearch()">Clear</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Loading airlines...</div>
+
+  <div *ngIf="!isLoading && pagedRows.length > 0" class="table-container">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th (click)="setSort('airline')">Airline <i class="fa-solid {{ getSortIcon('airline') }}"></i></th>
+          <th (click)="setSort('totalFlights')">Total Flights <i class="fa-solid {{ getSortIcon('totalFlights') }}"></i></th>
+          <th (click)="setSort('routes')">Sample Routes <i class="fa-solid {{ getSortIcon('routes') }}"></i></th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of pagedRows">
+          <td><strong>{{ row.airline }}</strong></td>
+          <td>{{ row.totalFlights }}</td>
+          <td>{{ row.routes }}</td>
+          <td>
+            <button class="btn btn-sm btn-edit" (click)="openEditModal(row)" type="button">
+              <i class="fa-solid fa-pen"></i>
+              <span>Edit Detail</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && pagedRows.length === 0" class="no-data">No airlines found.</div>
+
+  <div class="pagination-tools" *ngIf="!isLoading && totalRecords > 0">
+    <div class="record-info">
+      Showing {{ (currentPage - 1) * pageSize + 1 }} -
+      {{ Math.min(currentPage * pageSize, totalRecords) }} of {{ totalRecords }}
+    </div>
+    <div class="size-control">
+      <label>Rows:</label>
+      <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        <option *ngFor="let size of pageSizeOptions" [ngValue]="size">{{ size }}</option>
+      </select>
+    </div>
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <button class="btn btn-sm" (click)="goToFirstPage()" [disabled]="currentPage === 1">First</button>
+      <button class="btn btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">Prev</button>
+      <button
+        *ngFor="let page of getPaginationPages()"
+        class="btn btn-sm"
+        [disabled]="page === '...'"
+        [class.active]="page === currentPage"
+        (click)="goToPage(page)"
+      >
+        {{ page }}
+      </button>
+      <button class="btn btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+      <button class="btn btn-sm" (click)="goToLastPage()" [disabled]="currentPage === totalPages">Last</button>
+    </div>
+  </div>
+
+  <div *ngIf="showModal" class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Edit Airline</h3>
+        <button class="btn-close" type="button" (click)="closeModal()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Airline Name</label>
+          <input class="form-control" [(ngModel)]="newAirlineName" name="newAirlineName" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" (click)="closeModal()">Cancel</button>
+        <button class="btn btn-primary" type="button" (click)="saveAirline()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

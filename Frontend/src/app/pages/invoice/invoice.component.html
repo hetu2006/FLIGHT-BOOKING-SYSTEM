@@ -1,0 +1,91 @@
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<div class="container">
+  <div class="col-md-12">
+    <div class="invoice">
+      <!-- begin invoice-company -->
+      <div class="invoice-company text-inverse f-w-600">
+        <span class="pull-right hidden-print">
+          <button type="button" class="btn btn-sm btn-primary m-b-10" (click)="downloadSlipPdf()">
+            <i class="fa fa-download"></i> Download PDF
+          </button>
+          <button type="button" class="btn btn-sm btn-success m-b-10 ml-2" (click)="printSlip()">
+            <i class="fa fa-print"></i> Print
+          </button>
+        </span>
+        Flight Booking Receipt
+      </div>
+      <!-- end invoice-company -->
+      <!-- begin invoice-header -->
+      <div class="invoice-header">
+        <div class="invoice-from">
+          <address class="m-t-5 m-b-5">
+            <strong class="text-inverse">
+              Passenger: {{ booking?.user?.name || booking?.username || 'Unknown' }}
+            </strong>
+            <br />
+            Email: {{ booking?.user?.email || booking?.email || 'N/A' }}<br />
+            Phone: {{ booking?.user?.phoneNo || booking?.phoneNo || 'N/A' }}
+          </address>
+        </div>
+        <div class="invoice-to"></div>
+        <div class="invoice-date">
+          <small>Invoice Details</small>
+          <div class="invoice-detail">
+            Booking ID: {{ booking?.bookingId || booking?._id || 'N/A' }}<br />
+            Flight ID: {{ booking?.flightId || booking?.flight?._id || 'N/A' }}<br />
+            Status: {{ booking?.status || 'N/A' }}
+          </div>
+        </div>
+      </div>
+      <!-- end invoice-header -->
+      <!-- begin invoice-content -->
+      <div class="invoice-content">
+        <div class="row mb-3">
+          <div class="col-md-4"><strong>Total Tickets:</strong> {{ booking?.tickets?.length || 0 }}</div>
+          <div class="col-md-4"><strong>Total Cost:</strong> Rs. {{ booking?.totalCost || booking?.totalPrice || 0 }}</div>
+          <div class="col-md-4"><strong>Created At:</strong> {{ booking?.createdAt | date:'medium' }}</div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-invoice">
+            <thead>
+              <tr>
+                <th>Passenger</th>
+                <th class="text-center" width="20%">Class</th>
+                <th class="text-center" width="20%">Ticket No</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of booking?.tickets || []; let i = index">
+                <td>{{ ticket?.passengerName || 'Passenger ' + (i + 1) }}</td>
+                <td class="text-center">{{ ticket?.className || 'N/A' }}</td>
+                <td class="text-center">{{ ticket?.ticketNo || 'N/A' }}</td>
+              </tr>
+              <tr *ngIf="!(booking?.tickets?.length > 0)">
+                <td colspan="3" class="text-center">No tickets available</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="invoice-price">
+          <div class="invoice-price-left">
+            <div class="invoice-price-row"></div>
+          </div>
+          <div class="invoice-price-right">
+            <small>TOTAL</small>
+            <span class="f-w-600">Rs. {{ booking?.totalCost || booking?.totalPrice || 0 }}</span>
+          </div>
+        </div>
+      </div>
+      <!-- begin invoice-note -->
+      <!-- end invoice-note -->
+      <!-- begin invoice-footer -->
+      <div class="invoice-footer">
+        <p class="text-center m-b-5 f-w-600">THANK YOU FOR BOOKING</p>
+      </div>
+      <!-- end invoice-footer -->
+    </div>
+  </div>
+</div>

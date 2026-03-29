@@ -1,0 +1,30 @@
+<div class="admin-edit-profile">
+  <h2>Edit Profile</h2>
+  <div class="profile-form card">
+    <div class="card-body">
+      <form (ngSubmit)="saveProfile()">
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" class="form-control" [(ngModel)]="profile.name" name="name" />
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" class="form-control" [(ngModel)]="profile.username" name="username" readonly />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" class="form-control" [(ngModel)]="profile.email" name="email" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" class="form-control" [(ngModel)]="profile.phoneNo" name="phoneNo" />
+        </div>
+        <div class="form-group">
+          <label>Address</label>
+          <textarea class="form-control" [(ngModel)]="profile.address" name="address" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">{{ saving ? 'Saving...' : 'Save' }}</button>
+      </form>
+    </div>
+  </div>
+</div>

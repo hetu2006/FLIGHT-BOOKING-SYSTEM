@@ -1,0 +1,363 @@
+<div class="loader-container" *ngIf="displayModal">
+  <div
+    class="spinner-border text-light"
+    style="width: 3rem; height: 3rem"
+    role="status"
+  ></div>
+  <h3 style="margin-top: 10px; color: white">Loading</h3>
+</div>
+
+<div class="container">
+  <div class="flight-class-buttons">
+    <div
+      class="card mt-5"
+      style="
+        width: 100%;
+        box-shadow: '0px 0px 7px #ccc';
+        background-color: white;
+      "
+    >
+      <div class="card-body">
+        <h4 class="card-title font-weight-bold">Flight Classes</h4>
+        <div class="ml-5" style="font-size: 18px; color: black">
+          <div class="mt-3" *ngIf="displayEconomyClass">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="economy-flight-classes"
+              name="economy-flight-classes"
+              [(ngModel)]="isEconomyClass"
+            />
+            <label class="form-check-label" for="economy-flight-classes ">
+              Economy Class
+            </label>
+          </div>
+          <div class="mt-2" *ngIf="displayBusinessClass">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="business-flight-classes"
+              name="business-flight-classes"
+              [(ngModel)]="isBusinessClass"
+            />
+            <label class="form-check-label" for="business-flight-classes">
+              Business Class
+            </label>
+          </div>
+          <div class="mt-2 mb-4" *ngIf="displayFirstClass">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="first-flight-classes"
+              name="first-flight-classes"
+              [(ngModel)]="isFirstClass"
+            />
+            <label class="form-check-label" for="first-flight-classes">
+              First Class
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <form (submit)="handleSetFormSubmit($event)" ngNativeValidate>
+      <!-- Economy Class -->
+      <div
+        class="card mt-5"
+        style="
+          width: 100%;
+          box-shadow: '0px 0px 7px #ccc';
+          background-color: white;
+        "
+        *ngIf="isEconomyClass"
+      >
+        <div class="card-body">
+          <h4 class="card-title font-weight-bold">Economy Class Details</h4>
+          <div>
+            <label
+              for="Fclass"
+              style="font-size: 18px; font-weight: bold; color: black"
+              >Total Tickets
+            </label>
+            <input
+              type="text"
+              id="Fclass"
+              name="totalTickets"
+              placeholder="Enter Total Tickets"
+              pattern="[0-9]+"
+              [(ngModel)]="economyClassTickets"
+            />
+          </div>
+
+          <!-- <div>
+          <label
+            for="Fcapacity"
+            style="font-size: 18px; font-weight: bold; color: black"
+          >
+            Ticket Price
+          </label>
+          <input
+            type="text"
+            id="Fcapacity"
+            name="ticketPrice"
+            placeholder="Ticket Price"
+            [(ngModel)]="economyClassTicketPrice"
+            disabled
+            readonly
+          />
+        </div> -->
+        </div>
+      </div>
+
+      <!-- Business Class -->
+      <div
+        class="card mt-5"
+        style="
+          width: 100%;
+          box-shadow: '0px 0px 7px #ccc';
+          background-color: white;
+        "
+        *ngIf="isBusinessClass"
+      >
+        <div class="card-body">
+          <h4 class="card-title font-weight-bold">Business Class Details</h4>
+          <div>
+            <label
+              for="Fclass"
+              style="font-size: 18px; font-weight: bold; color: black"
+              >Total Tickets
+            </label>
+            <input
+              type="text"
+              id="Fclass"
+              name="totalSeats"
+              placeholder="Enter Total Tickets"
+              pattern="[0-9]+"
+              [(ngModel)]="businessClassTickets"
+            />
+          </div>
+
+          <!-- <div>
+          <label
+            for="Fcapacity"
+            style="font-size: 18px; font-weight: bold; color: black"
+          >
+            Ticket Price
+          </label>
+          <input
+            type="text"
+            id="Fcapacity"
+            name="ticketPrice"
+            placeholder="Ticket Price"
+            [(ngModel)]="firstClassTicketPrice"
+            disabled
+            readonly
+          />
+        </div> -->
+        </div>
+      </div>
+
+      <!-- First Class -->
+      <div
+        class="card mt-5"
+        style="
+          width: 100%;
+          box-shadow: '0px 0px 7px #ccc';
+          background-color: white;
+        "
+        *ngIf="isFirstClass"
+      >
+        <div class="card-body">
+          <h4 class="card-title font-weight-bold">First Class Details</h4>
+          <div>
+            <label
+              for="Fclass"
+              style="font-size: 18px; font-weight: bold; color: black"
+              >Total Tickets
+            </label>
+            <input
+              type="text"
+              id="Fclass"
+              name="totalSeats"
+              placeholder="Enter Total Tickets"
+              pattern="[0-9]+"
+              [(ngModel)]="firstClassTickets"
+            />
+          </div>
+
+          <!-- <div>
+          <label
+            for="Fcapacity"
+            style="font-size: 18px; font-weight: bold; color: black"
+          >
+            Ticket Price
+          </label>
+          <input
+            type="text"
+            id="Fcapacity"
+            name="ticketPrice"
+            placeholder="Ticket Price"
+            [(ngModel)]="firstClassTicketPrice"
+            disabled
+            readonly
+          />
+        </div> -->
+        </div>
+      </div>
+      <div class="flight-book-button d-grid mt-5 mb-5">
+        <button type="submit" class="btn btn-primary" style="width: 100%">
+          Set
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div
+    class="card mt-5 mb-5"
+    style="width: 100%; box-shadow: '0px 0px 7px #ccc'; background-color: white"
+    *ngIf="displayFinalCosting"
+  >
+    <div class="card-body">
+      <h4 class="card-title font-weight-bold">Final Costing</h4>
+      <div>
+        <label
+          for="Fclass"
+          style="font-size: 18px; font-weight: bold; color: black"
+          >Total Tickets
+        </label>
+        <input
+          type="text"
+          id="Fclass"
+          name="totalSeats"
+          placeholder="Enter Total Tickets"
+          pattern="[0-9]+"
+          [(ngModel)]="finalTotalTickets"
+        />
+      </div>
+
+      <div>
+        <label
+          for="Fcapacity"
+          style="font-size: 18px; font-weight: bold; color: black"
+        >
+          Total Ticket Price
+        </label>
+        <input
+          type="text"
+          id="Fcapacity"
+          name="ticketPrice"
+          placeholder="Ticket Price"
+          [(ngModel)]="finalTotalPrice"
+          disabled
+          readonly
+        />
+      </div>
+
+      <!-- passenger names form -->
+      <div *ngIf="passengerDetails.length" class="passenger-section mt-4">
+        <h5>Passenger Details</h5>
+        <div *ngFor="let p of passengerDetails; let idx = index" class="form-group">
+          <label>Passenger {{ idx + 1 }} Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="p.name"
+            name="passenger{{idx}}"
+            placeholder="Enter full name"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="flight-book-button d-grid mt-3">
+        <button
+          type="button"
+          class="btn btn-primary"
+          style="width: 100%"
+          (click)="openPaymentModal()"
+        >
+          Proceed to Payment
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Payment Modal - Full screen overlay -->
+<div *ngIf="showPaymentModal" class="payment-modal-overlay" (click)="closePaymentModal()">
+  <div class="payment-modal-content" (click)="$event.stopPropagation()">
+    <div class="payment-modal-header">
+      <h3><i class="fa-solid fa-credit-card"></i> Complete Payment</h3>
+      <button type="button" class="btn-close-modal" (click)="closePaymentModal()">&times;</button>
+    </div>
+    <div class="payment-modal-body">
+      <div class="payment-summary-section">
+        <h4>Booking Summary</h4>
+        <div class="summary-row"><span>User:</span><strong>{{ userDetails.name || userDetails.username }}</strong></div>
+        <div class="summary-row"><span>Email:</span><strong>{{ userDetails.email }}</strong></div>
+        <div class="summary-row"><span>Flight:</span><strong>{{ selectedFlight[0]?.name || selectedFlight[0]?.flightNumber }}</strong></div>
+        <div class="summary-row"><span>Route:</span><strong>{{ selectedFlight[0]?.routeSource }} → {{ selectedFlight[0]?.routeDestination }}</strong></div>
+        <div class="summary-row"><span>Passengers:</span><strong>{{ finalTotalTickets }}</strong></div>
+        <div class="summary-row total-amount"><span>Total Amount:</span><strong>₹ {{ finalTotalPrice }}</strong></div>
+      </div>
+
+      <form (submit)="submitPayment($event)" class="payment-form">
+        <h4>Select Payment Method</h4>
+        <div class="payment-methods">
+          <label class="payment-option" [class.selected]="paymentMethod === 'googlepay'">
+            <input type="radio" name="pm" [(ngModel)]="paymentMethod" value="googlepay" />
+            <span class="pm-icon" style="background:#5F6368; color:#fff;">G</span> Google Pay
+          </label>
+          <label class="payment-option" [class.selected]="paymentMethod === 'paytm'">
+            <input type="radio" name="pm" [(ngModel)]="paymentMethod" value="paytm" />
+            <span class="pm-icon" style="background:#00BAF2; color:#fff;">P</span> Paytm
+          </label>
+          <label class="payment-option" [class.selected]="paymentMethod === 'bhim'">
+            <input type="radio" name="pm" [(ngModel)]="paymentMethod" value="bhim" />
+            <span class="pm-icon" style="background:#4CAF50; color:#fff;">B</span> BHIM UPI
+          </label>
+          <label class="payment-option" [class.selected]="paymentMethod === 'phonepe'">
+            <input type="radio" name="pm" [(ngModel)]="paymentMethod" value="phonepe" />
+            <span class="pm-icon" style="background:#5F259F; color:#fff;">Ph</span> PhonePe
+          </label>
+          <label class="payment-option" [class.selected]="paymentMethod === 'card'">
+            <input type="radio" name="pm" [(ngModel)]="paymentMethod" value="card" />
+            <span class="pm-icon" style="background:#1565C0; color:#fff;"><i class="fa-solid fa-credit-card"></i></span> Card
+          </label>
+        </div>
+
+        <div *ngIf="paymentMethod && paymentMethod !== 'card'" class="form-group">
+          <label>UPI ID / Mobile</label>
+          <input [(ngModel)]="paymentDetails.upiId" name="upiId" class="form-control" placeholder="xyz@paytm or 98XXXXXXXX" />
+        </div>
+        <div *ngIf="paymentMethod === 'card'" class="card-fields">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input [(ngModel)]="paymentDetails.cardNumber" name="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" />
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label>Expiry</label><input [(ngModel)]="paymentDetails.expiry" name="expiry" class="form-control" placeholder="MM/YY" /></div>
+            <div class="form-group"><label>CVV</label><input [(ngModel)]="paymentDetails.cvv" name="cvv" class="form-control" placeholder="123" type="password" /></div>
+          </div>
+        </div>
+
+        <div *ngIf="paymentErrors.length" class="payment-errors">
+          <ul>
+            <li *ngFor="let err of paymentErrors">{{ err }}</li>
+          </ul>
+        </div>
+
+        <div class="payment-modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closePaymentModal()" [disabled]="isPaymentProcessing">Cancel</button>
+          <button type="submit" class="btn btn-success" [disabled]="isPaymentProcessing || !paymentMethod">
+            <span *ngIf="isPaymentProcessing" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            <span *ngIf="!isPaymentProcessing">Pay ₹{{ finalTotalPrice }} Now</span>
+            <span *ngIf="isPaymentProcessing"> Processing...</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

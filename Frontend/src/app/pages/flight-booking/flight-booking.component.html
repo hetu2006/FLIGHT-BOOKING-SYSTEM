@@ -1,0 +1,164 @@
+<div class="loader-container" *ngIf="displayModal">
+  <div class="spinner-border text-light" style="width: 3rem; height: 3rem" role="status"></div>
+  <h3>Searching flights...</h3>
+</div>
+
+<section class="search-page">
+  <div class="search-backdrop"></div>
+  <div class="search-shell">
+    <div class="search-head">
+      <h2>Find Your Next Flight</h2>
+      <p>Search by route and date, then compare flights and book quickly.</p>
+    </div>
+
+    <div class="search-body">
+      <form (submit)="handleFormSubmit($event)" class="search-form" novalidate>
+        <div class="trip-switch">
+          <button
+            type="button"
+            class="switch-btn"
+            [class.active]="tripType === 'roundTrip'"
+            (click)="onTripTypeChange('roundTrip')"
+          >
+            Round Trip
+          </button>
+          <button
+            type="button"
+            class="switch-btn"
+            [class.active]="tripType === 'oneWay'"
+            (click)="onTripTypeChange('oneWay')"
+          >
+            One Way
+          </button>
+        </div>
+
+        <div class="form-grid route-grid">
+          <div class="form-group">
+            <label class="form-label">From</label>
+            <select class="form-control" [(ngModel)]="origin" name="origin" required>
+              <option value="">Select departure city</option>
+              <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+            </select>
+            <span class="select-arrow"></span>
+          </div>
+
+          <button class="swap-btn" type="button" (click)="swapCities()" aria-label="Swap cities">
+            Swap
+          </button>
+
+          <div class="form-group">
+            <label class="form-label">To</label>
+            <select class="form-control" [(ngModel)]="destination" name="destination" required>
+              <option value="">Select destination city</option>
+              <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+            </select>
+            <span class="select-arrow"></span>
+          </div>
+        </div>
+
+        <div class="form-grid two-col">
+          <div class="form-group">
+            <label class="form-label">Departure Date</label>
+            <input
+              class="form-control"
+              type="date"
+              name="departureDate"
+              required
+              [min]="today"
+              [(ngModel)]="departureDate"
+            />
+          </div>
+
+          <div class="form-group" *ngIf="tripType === 'roundTrip'">
+            <label class="form-label">Return Date</label>
+            <input
+              class="form-control"
+              type="date"
+              name="returnDate"
+              required
+              [min]="getMinReturnDate()"
+              [(ngModel)]="returnDate"
+            />
+          </div>
+        </div>
+
+        <div class="form-grid three-col">
+          <div class="form-group">
+            <label class="form-label">Adults (18+)</label>
+            <select class="form-control" [(ngModel)]="adultCount" name="adultCount" required>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+            </select>
+            <span class="select-arrow"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Children (0-17)</label>
+            <select class="form-control" [(ngModel)]="childrenCount" name="childrenCount" required>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+            <span class="select-arrow"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Class</label>
+            <select class="form-control" [(ngModel)]="flightClass" name="flightClass" required>
+              <option value="Any">Any</option>
+              <option value="Economy Class">Economy</option>
+              <option value="Business Class">Business</option>
+              <option value="First Class">First Class</option>
+            </select>
+            <span class="select-arrow"></span>
+          </div>
+        </div>
+
+        <button class="search-btn" type="submit">
+          Search Flights
+        </button>
+      </form>
+
+      <aside class="related-panel">
+        <h3>Popular Routes</h3>
+        <p>Tap any route to auto-fill the form and search faster.</p>
+
+        <div class="route-tags">
+          <button
+            type="button"
+            class="tag-btn"
+            *ngFor="let route of quickRoutes"
+            (click)="useQuickRoute(route.from, route.to)"
+          >
+            {{ route.label }}
+          </button>
+        </div>
+
+        <div class="info-card">
+          <h4>Booking Tips</h4>
+          <ul>
+            <li>Book 2-4 weeks early for better fares.</li>
+            <li>Use one-way mode when return date is not fixed.</li>
+            <li>Avoid same-day return for long-distance routes.</li>
+          </ul>
+        </div>
+
+        <div class="info-card">
+          <h4>What You Get</h4>
+          <ul>
+            <li>Live availability from your backend API.</li>
+            <li>Direct navigation to flight details page.</li>
+            <li>Round-trip and one-way comparison flow.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

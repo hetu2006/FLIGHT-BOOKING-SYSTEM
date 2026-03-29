@@ -1,0 +1,125 @@
+<div class="container">
+  <h3 class="mb-3">Flight Booking History</h3>
+  <div class="search-box mb-4">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Search by Ticket No, Booking ID, Flight ID..."
+      [(ngModel)]="searchText"
+      (keyup)="filterBookings()"
+      style="max-width:400px; display:inline-block; margin-right:10px;"
+    />
+    <button class="btn btn-secondary" (click)="searchText=''; filterBookings()">Clear</button>
+  </div>
+</div>
+
+<div class="loader-container" *ngIf="displayModal">
+  <div
+    class="spinner-border text-light"
+    style="width: 3rem; height: 3rem"
+    role="status"
+  ></div>
+  <h3 style="margin-top: 10px; color: white">Loading</h3>
+</div>
+
+<div class="container">
+  <h3 class="mb-4">Flight Booking History</h3>
+  <div class="row g-4">
+    <div class="col-12 col-sm-6 col-md-4" *ngFor="let booking of filteredHistory">
+      <div class="card" style="width: 100%; box-shadow: '0px 0px 7px #ccc'">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4 class="card-title font-weight-bold">
+                {{ (booking.tickets && booking.tickets[0]) ? (booking.tickets[0].ticketNo || booking.bookingId || booking._id) : (booking.bookingId || booking._id) }}
+              </h4>
+              <span class="badge" [ngClass]="{
+                'badge-success': normalizeStatus(booking.status) === 'confirmed' || normalizeStatus(booking.status) === 'completed',
+                'badge-warning': normalizeStatus(booking.status) === 'pending',
+                'badge-danger': normalizeStatus(booking.status) === 'cancelled'
+              }">
+                {{ normalizeStatus(booking.status) | titlecase }}
+              </span>
+            </div>
+            <div class="card-text">
+            <h6
+              style="
+                padding: 15px 10px;
+                box-shadow: '0px 0px 7px #ccc';
+                margin-top: 15px;
+                border-radius: 5px;
+              "
+            >
+              Booking Id:
+              <span style="font-weight: 400">{{ booking._id }}</span>
+            </h6>
+            <h6
+              style="
+                padding: 15px 10px;
+                box-shadow: '0px 0px 7px #ccc';
+                margin-top: 20px;
+                border-radius: 5px;
+              "
+            >
+              Flight Id:
+              <span style="font-weight: 400">{{ booking.flightId }}</span>
+            </h6>
+
+            <h6
+              style="
+                padding: 15px 10px;
+                box-shadow: '0px 0px 7px #ccc';
+                margin-top: 15px;
+                border-radius: 5px;
+              "
+            >
+              Date:
+              <span style="font-weight: 400">{{ booking.createdAt }}</span>
+            </h6>
+            <h6
+              style="
+                padding: 15px 10px;
+                box-shadow: '0px 0px 7px #ccc';
+                margin-top: 15px;
+                border-radius: 5px;
+              "
+            >
+              Total Tickets:
+              <span style="font-weight: 400">{{ booking.tickets.length }}</span>
+            </h6>
+            <h6
+              style="
+                padding: 15px 10px;
+                box-shadow: '0px 0px 7px #ccc';
+                margin-top: 15px;
+                border-radius: 5px;
+              "
+            >
+              Total Cost:
+              <span style="font-weight: 400">{{ booking.totalCost }}</span>
+            </h6>
+          </div>
+
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-primary" (click)="viewReceipt(booking)">
+                View
+              </button>
+              <button
+                class="btn btn-warning"
+                *ngIf="normalizeStatus(booking.status) === 'pending'"
+                (click)="cancelBooking(booking)"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn btn-success"
+                *ngIf="normalizeStatus(booking.status) === 'confirmed'"
+                (click)="viewReceipt(booking)"
+              >
+                Download
+              </button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
