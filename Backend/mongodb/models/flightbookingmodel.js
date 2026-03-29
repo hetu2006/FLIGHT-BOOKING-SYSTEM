@@ -7,6 +7,8 @@ const FlightBookingSchema = new Schema(
     flightId: { type: String, unique: false, required: true },
     userId: { type: String, unique: false, required: true },
     username: { type: String, unique: false, required: true },
+    userEmail: { type: String, unique: false, required: false },
+    userPhone: { type: String, unique: false, required: false },
     isEconomyClass: {
       type: Boolean,
       unique: false,

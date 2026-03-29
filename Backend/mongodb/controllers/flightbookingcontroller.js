@@ -76,6 +76,8 @@ const getFlightBookingsById = async (id) => {
     const flights = await FlightModel.find({ _id: { $in: flightIds } }).lean();
     const flightMap = new Map(flights.map((f) => [String(f._id), f]));
 
+    const user = await UserModel.findById(id).lean();
+
     const enriched = [];
     const now = new Date();
     for (const booking of data) {
@@ -87,7 +89,15 @@ const getFlightBookingsById = async (id) => {
           finalBooking = { ...booking, status: "completed" };
         }
       }
-      enriched.push(toBookingDto(finalBooking, flightMap.get(String(booking.flightId))));
+      
+      const dto = toBookingDto(finalBooking, flightMap.get(String(booking.flightId)));
+      dto.user = {
+        name: user?.name || booking.username || '',
+        username: user?.username || booking.username || '',
+        email: user?.email || booking.userEmail || '',
+        phoneNo: user?.phoneNo || booking.userPhone || '',
+      };
+      enriched.push(dto);
     }
 
     return {
